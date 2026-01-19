@@ -1,22 +1,32 @@
 import GamePad from "../../ui/GamePad/GamePad.jsx";
+import PrimaryButton from "../../ui/PrimaryButton/PrimaryButton.jsx";
 
-function PlayScreen({ onFinish }) {
+function PlayScreen({ level, phase, activeIndex, onStart, onPadPress }) {
+  const isIdle = phase === "idle";
+  const isShowing = phase === "showing";
+  const isInput = phase === "input";
+
   return (
-    <div style={{ maxWidth: 1100, margin: "0 auto", padding: 24 }}>
+    <div>
       <h2>Game</h2>
+      <p>Level: {level || "—"}</p>
+      <p>Status: {phase}</p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: 24 }}>
-        <div>
-          <p>Level: —</p>
-          <button onClick={onFinish}>Finish</button>
-        </div>
+      {isIdle && (
+        <PrimaryButton onClick={onStart}>Start</PrimaryButton>
+      )}
 
-        <div style={{ display: "flex", justifyContent: "flex-start" }}>
-          <GamePad />
-        </div>
-      </div>
+      <GamePad
+        activeIndex={activeIndex}
+        onPadPress={onPadPress}
+        disabled={!isInput}
+      />
+
+      {isShowing && <p>Watch the pattern…</p>}
+      {isInput && <p>Your turn!</p>}
     </div>
   );
 }
 
 export default PlayScreen;
+

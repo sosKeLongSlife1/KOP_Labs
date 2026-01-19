@@ -1,22 +1,29 @@
 import PadButton from "../PadButton/PadButton.jsx";
 
-function GamePad() {
+const COLORS = ["#00ffff", "#ff00ff", "#5f9ea0", "#7cfc00", "#8b4513"];
+
+function GamePad({ activeIndex, onPadPress, disabled = false }) {
   return (
     <div
       style={{
         display: "flex",
-        gap: 10,              
+        gap: 10,
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <PadButton color="#00ffff" />
-      <PadButton color="#ff00ff" />
-      <PadButton color="#5f9ea0" />
-      <PadButton color="#7cfc00" />
-      <PadButton color="#8b4513" />
+      {COLORS.map((c, i) => (
+        <PadButton
+          key={i}
+          color={c}
+          isActive={i === activeIndex}
+          disabled={disabled}
+          onClick={() => onPadPress(i)}
+        />
+      ))}
     </div>
   );
 }
 
 export default GamePad;
+
