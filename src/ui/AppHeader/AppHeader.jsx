@@ -1,7 +1,9 @@
+import styles from "./AppHeader.module.css";
+
 function AppHeader() {
   return (
-    <header>
-      <h1>Simon Says</h1>
+    <header className={styles.header}>
+      <h1 className={styles.title}>Simon Says</h1>
     </header>
   );
 }

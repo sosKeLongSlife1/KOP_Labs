@@ -1,10 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import AppShell from "./core/AppShell.jsx";
+import { BrowserRouter } from "react-router-dom";
+
+import RouterShell from "./core/RouterShell.jsx";
 import "./styles/base.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AppShell />
+    <BrowserRouter>
+      <RouterShell />
+    </BrowserRouter>
   </React.StrictMode>
 );
