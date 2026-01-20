@@ -1,70 +1,71 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigate } from "react-router-dom";
 
 import PrimaryButton from "../../ui/PrimaryButton/PrimaryButton.jsx";
 import { optionsSchema } from "../../logic/optionsSchema.js";
+import { useOptionsState } from "../../state/useOptionsState.js";
 
-function SettingsScreen({ initialOptions, onSave, onBack }) {
+import styles from "./SettingsScreen.module.css";
+
+function SettingsScreen() {
+  const navigate = useNavigate();
+
+  const playerName = useOptionsState((s) => s.playerName);
+  const speedMs = useOptionsState((s) => s.speedMs);
+  const soundOn = useOptionsState((s) => s.soundOn);
+  const setOptions = useOptionsState((s) => s.setOptions);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
-    defaultValues: initialOptions,
+    defaultValues: { playerName, speedMs, soundOn },
     resolver: yupResolver(optionsSchema),
     mode: "onSubmit",
   });
 
   const submit = (data) => {
-    onSave({
+    setOptions({
       playerName: data.playerName.trim(),
       speedMs: Number(data.speedMs),
       soundOn: Boolean(data.soundOn),
     });
-    onBack();
+    navigate("/");
   };
 
   return (
-    <div style={{ maxWidth: 520, margin: "0 auto", padding: 16 }}>
+    <div className={styles.wrap}>
       <h2>Settings</h2>
 
-      <form onSubmit={handleSubmit(submit)} style={{ display: "grid", gap: 12 }}>
-        <label style={{ display: "grid", gap: 6 }}>
+      <form onSubmit={handleSubmit(submit)} className={styles.form}>
+        <label className={styles.field}>
           <span>Player name</span>
-          <input
-            {...register("playerName")}
-            placeholder="e.g. Alex"
-            style={{ padding: 8 }}
-          />
+          <input {...register("playerName")} placeholder="e.g. Alex" />
           {errors.playerName && (
-            <span style={{ color: "crimson" }}>{errors.playerName.message}</span>
+            <span className={styles.err}>{errors.playerName.message}</span>
           )}
         </label>
 
-        <label style={{ display: "grid", gap: 6 }}>
+        <label className={styles.field}>
           <span>Speed (ms)</span>
-          <input
-            {...register("speedMs")}
-            type="number"
-            step="50"
-            style={{ padding: 8 }}
-          />
+          <input {...register("speedMs")} type="number" step="50" />
           {errors.speedMs && (
-            <span style={{ color: "crimson" }}>{errors.speedMs.message}</span>
+            <span className={styles.err}>{errors.speedMs.message}</span>
           )}
         </label>
 
-        <label style={{ display: "flex", gap: 10, alignItems: "center" }}>
+        <label className={styles.checkRow}>
           <input type="checkbox" {...register("soundOn")} />
           <span>Sound</span>
         </label>
 
-        <div style={{ display: "flex", gap: 10 }}>
+        <div className={styles.actions}>
           <PrimaryButton type="submit" disabled={isSubmitting}>
             Save
           </PrimaryButton>
-
-          <button type="button" onClick={onBack}>
+          <button type="button" onClick={() => navigate("/")}>
             Back
           </button>
         </div>
