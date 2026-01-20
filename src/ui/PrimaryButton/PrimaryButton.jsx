@@ -1,5 +1,9 @@
-function Button({ children, onClick }) {
-  return <button onClick={onClick}>{children}</button>;
+function PrimaryButton({ children, onClick, type = "button", disabled = false }) {
+  return (
+    <button type={type} onClick={onClick} disabled={disabled}>
+      {children}
+    </button>
+  );
 }
 
-export default Button;
+export default PrimaryButton;
